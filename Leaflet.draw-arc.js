@@ -114,6 +114,10 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
 		endIcon: new L.DivIcon({
 			iconSize: new L.Point(8, 8),
 			className: 'leaflet-div-icon leaflet-editing-icon leaflet-edit-rotate'
+		}),
+		rotateIcon: new L.DivIcon({
+			iconSize: new L.Point(8, 8),
+			className: 'leaflet-div-icon leaflet-editing-icon leaflet-edit-rotate'
 		})
 	},
 
@@ -133,6 +137,9 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
 
 		// Create end Marker
 		this._createEndMarker();
+
+		//Create rotate Marker
+		this._createRotateMarker();
 	},
 
 	_createMoveMarker: function _createMoveMarker() {
@@ -145,7 +152,7 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
 	_createResizeMarker: function _createResizeMarker() {
 		var center = this._shape.getCenter();
 
-		var bearing = (this._shape.getEndBearing() - this._shape.getStartBearing()) / 2;
+		var bearing = (this._shape.getEndBearing() + this._shape.getStartBearing()) / 2;
 
 		var point = this._shape.computeDestinationPoint(center, this._shape.getRadius(), bearing);
 
@@ -168,11 +175,21 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
 		this._endMarker = this._createMarker(point, this.options.endIcon);
 	},
 
-	_getRotateMarkerPoint: function _getRotateMarkerPoint(latlng) {
-		var moveLatLng = this._moveMarker.getLatLng();
-		var br = this._shape.computeDestinationPoint(moveLatLng, this._shape.getLength() * 1.5 / 2, this._shape.getBearing());
-		return br;
+	_createRotateMarker: function _createRotateMarker() {
+		var center = this._shape.getCenter();
+
+		var bearing = (this._shape.getEndBearing() + this._shape.getStartBearing()) / 2;
+
+		var point = this._shape.computeDestinationPoint(center, this._shape.getRadius() * 1.3, bearing);
+
+		this._rotateMarker = this._createMarker(point, this.options.rotateIcon);
 	},
+
+	/*_getRotateMarkerPoint: function (latlng) {
+ 	let moveLatLng = this._moveMarker.getLatLng()
+ 	let br = this._shape.computeDestinationPoint(moveLatLng, this._shape.getLength() * 1.5 / 2, this._shape.getBearing())
+ 	return br
+ },*/
 
 	_onMarkerDragStart: function _onMarkerDragStart(e) {
 		L.Edit.SimpleShape.prototype._onMarkerDragStart.call(this, e);
@@ -189,8 +206,10 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
 			this._resize(latlng);
 		} else if (marker === this._startMarker) {
 			this._restart(latlng);
-		} else {
+		} else if (marker === this._endMarker) {
 			this._end(latlng);
+		} else {
+			this._rotate(latlng);
 		}
 
 		this._shape.redraw();
@@ -202,12 +221,9 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
 
 		// Move the resize marker
 		this._repositionResizeMarker();
-
-		// Move the rotate marker
-		//this._repositionRotateMarker();
 		this._repositionStartMarker();
-
 		this._repositionEndMarker();
+		this._repositionRotateMarker();
 	},
 
 	_resize: function _resize(latlng) {
@@ -220,6 +236,7 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
 		this._repositionStartMarker();
 		this._repositionEndMarker();
 		this._repositionResizeMarker();
+		this._repositionRotateMarker();
 	},
 
 	_restart: function _restart(latlng) {
@@ -239,6 +256,7 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
 		this._repositionResizeMarker();
 		this._repositionStartMarker();
 		this._repositionEndMarker();
+		this._repositionRotateMarker();
 	},
 
 	_end: function _end(latlng) {
@@ -257,6 +275,31 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
 		this._repositionResizeMarker();
 		this._repositionEndMarker();
 		this._repositionStartMarker();
+		this._repositionRotateMarker();
+	},
+
+	_rotate: function _rotate(latlng) {
+		var moveLatLng = this._shape.getCenter();
+
+		var pc = this._map.project(moveLatLng);
+		var ph = this._map.project(latlng);
+		var v = [ph.x - pc.x, ph.y - pc.y];
+
+		var newB = Math.atan2(v[0], -v[1]) * 180 / Math.PI;
+		var oldB = (this._shape.getStartBearing() + this._shape.getEndBearing()) / 2;
+		var angle = this._shape.getEndBearing() - this._shape.getStartBearing();
+
+		var newStart = (newB - angle / 2) % 360;
+		var newEnd = (newB + angle / 2) % 360;
+
+		this._shape.setStartBearing(newStart);
+		this._shape.setEndBearing(newEnd);
+		this._shape.setLatLngs(this._shape.getLatLngs());
+
+		this._repositionResizeMarker();
+		this._repositionEndMarker();
+		this._repositionStartMarker();
+		this._repositionRotateMarker();
 	},
 
 	_repositionResizeMarker: function _repositionResizeMarker() {
@@ -274,6 +317,16 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
 	_repositionEndMarker: function _repositionEndMarker() {
 		var end = this._shape.computeDestinationPoint(this._shape.getCenter(), this._shape.getRadius(), this._shape.getEndBearing());
 		this._endMarker.setLatLng(end);
+	},
+
+	_repositionRotateMarker: function _repositionRotateMarker() {
+		var center = this._shape.getCenter();
+
+		var bearing = (this._shape.getEndBearing() + this._shape.getStartBearing()) / 2;
+
+		var point = this._shape.computeDestinationPoint(center, this._shape.getRadius() * 1.3, bearing);
+
+		this._rotateMarker.setLatLng(point);
 	}
 });
 
