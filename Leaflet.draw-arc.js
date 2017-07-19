@@ -210,22 +210,6 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
 		this._repositionEndMarker();
 	},
 
-	/*_rotate: function (latlng) {
- 		let moveLatLng = this._moveMarker.getLatLng()
- 	let pc = this._map.project(moveLatLng)
- 	let ph = this._map.project(latlng)
- 	let v = [ph.x - pc.x, ph.y - pc.y]
- 		let newB = Math.atan2(v[0], -v[1]) * 180 / Math.PI
- 		this._shape.setBearing(newB)
-        this._shape.setLatLngs(this._shape.getLatLngs())
- 	
- 	// Move the resize marker
- 	this._repositionResizeMarkers();
- 	
- 	// Move the rotate marker
- 	this._repositionRotateMarker();
- },*/
-
 	_resize: function _resize(latlng) {
 		//let moveLatLng = this._moveMarker.getLatLng()
 		var radius = this._shape.getCenter().distanceTo(latlng);
@@ -235,31 +219,7 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
 
 		this._repositionStartMarker();
 		this._repositionEndMarker();
-		/*var moveLatLng = this._moveMarker.getLatLng();
-  var radius = moveLatLng.distanceTo(latlng)
-  	let center = this._map.project(moveLatLng)
-  let corner = this._map.project(latlng)
-  let bearing = this._map.project(this._rotateMarker._latlng)
-  	let bearingVector = [bearing.x - center.x, bearing.y - center.y]
-  let cornerVector = [corner.x - center.x, corner.y - center.y]
-  	let vradius = Math.sqrt(Math.pow(cornerVector[0], 2) + Math.pow(cornerVector[1], 2))
-  let bearingRadius = Math.sqrt(Math.pow(bearingVector[0], 2) + Math.pow(bearingVector[1], 2))
-  let dp = bearingVector[0] * cornerVector[0] + bearingVector[1] * cornerVector[1]
-  	let newPointVector = [dp * bearingVector[0]/Math.pow(bearingRadius, 2), dp * bearingVector[1]/Math.pow(bearingRadius,2)]
-  	let newPoint = new L.Point(
-  	center.x + newPointVector[0],
-  	center.y + newPointVector[1]
-  )
-  	let newlatlng = this._map.unproject(newPoint)
-  	let length = 2 * moveLatLng.distanceTo(newlatlng)
-  let width = 2* latlng.distanceTo(newlatlng)
-  	this._shape.setWidth(width)
-  this._shape.setLength(length)
-  this._shape.setLatLngs(this._shape.getLatLngs())
-  	// Move the resize marker
-  this._repositionResizeMarkers();
-  // Move the rotate marker
-  this._repositionRotateMarker();*/
+		this._repositionResizeMarker();
 	},
 
 	_restart: function _restart(latlng) {
@@ -272,15 +232,13 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
 		var newB = Math.atan2(v[0], -v[1]) * 180 / Math.PI;
 
 		this._shape.setStartBearing(newB);
-		//this._shape.setBearing(newB)
+
 		this._shape.setLatLngs(this._shape.getLatLngs());
 
 		// Move the resize marker
 		this._repositionResizeMarker();
 		this._repositionStartMarker();
-
-		// Move the rotate marker
-		//this._repositionEndMarker();		
+		this._repositionEndMarker();
 	},
 
 	_end: function _end(latlng) {
@@ -292,35 +250,21 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
 
 		var newB = Math.atan2(v[0], -v[1]) * 180 / Math.PI;
 		this._shape.setEndBearing(newB);
-		//this._shape.setBearing(newB)
+
 		this._shape.setLatLngs(this._shape.getLatLngs());
 
 		// Move the resize marker
 		this._repositionResizeMarker();
 		this._repositionEndMarker();
-
-		// Move the rotate marker
-		//this._repositionEndMarker();
+		this._repositionStartMarker();
 	},
 
 	_repositionResizeMarker: function _repositionResizeMarker() {
-		/*this._shape.getLatLngs()[0]
-      .forEach((latlng, index) => {
-          this._resizeMarkers[index].setLatLng(latlng)
-      })*/
-
 		var bearing = (this._shape.getEndBearing() + this._shape.getStartBearing()) / 2;
 		var point = this._shape.computeDestinationPoint(this._shape.getCenter(), this._shape.getRadius(), bearing);
 
 		this._resizeMarker.setLatLng(point);
 	},
-
-	/*_repositionRotateMarker: function () {
- 	var latlng = this._moveMarker.getLatLng();
- 	var rotatemarkerPoint = this._getRotateMarkerPoint(latlng)
- 	
- 	this._rotateMarker.setLatLng(rotatemarkerPoint)
- }*/
 
 	_repositionStartMarker: function _repositionStartMarker() {
 		var start = this._shape.computeDestinationPoint(this._shape.getCenter(), this._shape.getRadius(), this._shape.getStartBearing());

@@ -135,6 +135,7 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
 
 		this._repositionStartMarker()
 		this._repositionEndMarker()
+		this._repositionResizeMarker()
 
 	},
 
@@ -154,6 +155,7 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
 		// Move the resize marker
 		this._repositionResizeMarker()
 		this._repositionStartMarker()
+		this._repositionEndMarker()
 	
 	},
 
@@ -172,6 +174,7 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
 		// Move the resize marker
 		this._repositionResizeMarker()
 		this._repositionEndMarker()
+		this._repositionStartMarker()
 
 	},
 	
