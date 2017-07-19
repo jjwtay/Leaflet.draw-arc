@@ -1,9 +1,9 @@
 import './draw/handler/Draw.Arc'
 import './edit/handler/Edit.Arc'
 
-L.drawLocal.draw.toolbar.buttons.box = 'Draw an Arc';
+L.drawLocal.draw.toolbar.buttons.arc = 'Draw an Arc';
 
-L.drawLocal.draw.handlers.box = {
+L.drawLocal.draw.handlers.arc = {
 	tooltip: {
 		start: 'Click and drag to draw box.'
 	},

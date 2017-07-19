@@ -30,37 +30,39 @@ L.Draw.Arc = L.Draw.SimpleShape.extend({
 	_drawShape: function (latlng) {
 		if (!this._shape) {
 			
-			let width = Math.max(this._startLatLng.distanceTo(latlng), 10)
-			let length = width
-			this._shape = L.box({
+			let radius = Math.max(this._startLatLng.distanceTo(latlng), 10)
+			
+			this._shape = L.arc({
                 center: this._startLatLng,
-                width,
-                length,
-				bearing: 0,
+                radius,
+                
+				startBearing: 0,
+				endBearing: 90,
                 ...this.options.shapeOptions
             })
 			this._map.addLayer(this._shape);
 		} else {
-			let bounds = new L.LatLngBounds(this._startLatLng, latlng)
+			this._shape.setRadius(Math.max(this._startLatLng.distanceTo(latlng)))
+			this._shape.setLatLngs(this._shape.getLatLngs())
+			/*let bounds = new L.LatLngBounds(this._startLatLng, latlng)
 			let width = 2 * bounds.getNorthWest().distanceTo(bounds.getNorthEast())
 			let height = width
 			this._shape.setWidth(width)
 			this._shape.setLength(height)
-			this._shape.setLatLngs(this._shape.getLatLngs())
+			this._shape.setLatLngs(this._shape.getLatLngs())*/
 		}
 	},
 
 	_fireCreatedEvent: function () {
-		let box = L.box({
+		let arc = L.arc({
 			...this.options.shapeOptions,
             center: this._startLatLng,
-            width: this._shape.getWidth(),
-            length: this._shape.getLength(),
-			bearing: this._shape.getBearing(),
-
+            radius: this._shape.getRadius(),
+			startBearing: this._shape.getStartBearing(),
+            endBearing: this._shape.getEndBearing()
         })
 
-		L.Draw.SimpleShape.prototype._fireCreatedEvent.call(this, box)
+		L.Draw.SimpleShape.prototype._fireCreatedEvent.call(this, arc)
 	},
 
 	_onMouseMove: function (e) {
@@ -74,7 +76,7 @@ L.Draw.Arc = L.Draw.SimpleShape.extend({
 			this._drawShape(latlng);
 
 
-			radius = this._shape.getWidth()
+			radius = this._shape.getRadius()
 
 			this._tooltip.updateContent({
 				text: this._endLabelText,
