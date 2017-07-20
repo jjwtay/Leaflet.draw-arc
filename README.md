@@ -21,3 +21,7 @@ See [Leaflet.draw](https://github.com/Leaflet/Leaflet.draw#using) and [leaflet.a
 [leaflet.sector](https://github.com/jjwtay/leaflet.sector) - Leaflet Sector drawing.
 
 [leaflet.draw-sector](https://github.com/jjwtay/leaflet.draw-sector) - Leaflet Draw support for leaflet.sector.
+
+# License
+
+This code is provided under the Apache 2.0 license.
