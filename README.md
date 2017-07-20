@@ -1,4 +1,4 @@
-# Leaflet.draw-arc (Work in progress)
+# Leaflet.draw-arc
 Leaflet Draw support for leaflet.arc inspired by [Leaflet.ellipse](https://github.com/haleystorm/Leaflet.draw-ellipse). Checkout the [Demo](https://jjwtay.github.io/Leaflet.draw-arc/)
 
 # Important
