@@ -11,3 +11,13 @@ Leaflet.draw-arc requires
 ## Usage
 
 See [Leaflet.draw](https://github.com/Leaflet/Leaflet.draw#using) and [leaflet.arc](https://github.com/jjwtay/leaflet.box).
+
+# Checkout
+
+[leaflet.box](https://github.com/jjwtay/leaflet.box) - Leaflet Box drawing.
+
+[leaflet.draw-box](https://github.com/jjwtay/leaflet.draw-box) - Leaflet Draw support for leaflet.box.
+
+[leaflet.sector](https://github.com/jjwtay/leaflet.sector) - Leaflet Sector drawing.
+
+[leaflet.draw-sector](https://github.com/jjwtay/leaflet.draw-sector) - Leaflet Draw support for leaflet.sector.

@@ -28,6 +28,7 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
 		if (!this._markerGroup) {
 			this._markerGroup = new L.LayerGroup()
 		}
+		this._resizeMarkers = [];
 
 		// Create center marker
 		this._createMoveMarker()
@@ -204,12 +205,16 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
 		let ph = this._map.project(latlng)
 		let v = [ph.x - pc.x, ph.y - pc.y]
 
-		let newB = Math.atan2(v[0], -v[1]) * 180 / Math.PI 
-		let oldB = (this._shape.getStartBearing() + this._shape.getEndBearing()) / 2
+		let newB = (Math.atan2(v[0], -v[1]) * 180 / Math.PI) % 360
+		let halfAngle = (this._shape.getEndBearing() - this._shape.getStartBearing()) / 2
+		/*let oldB = (this._shape.getStartBearing() + this._shape.getEndBearing()) / 2
 		let angle = (this._shape.getEndBearing() - this._shape.getStartBearing())
 
 		let newStart = (newB - angle/2)% 360
-		let newEnd = (newB + angle/2)% 360
+		let newEnd = (newB + angle/2)% 360*/
+
+		let newStart = (newB - halfAngle)
+		let newEnd = (newStart + 2 * halfAngle)
 
 		this._shape.setStartBearing(newStart)
 		this._shape.setEndBearing(newEnd)

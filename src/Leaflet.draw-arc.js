@@ -5,7 +5,10 @@ L.drawLocal.draw.toolbar.buttons.arc = 'Draw an Arc';
 
 L.drawLocal.draw.handlers.arc = {
 	tooltip: {
-		start: 'Click and drag to draw box.'
+		start: 'Click to set Arc center.',
+		line: 'Click to set Radius and Start Bearing.',
+		end: 'Click to set End Bearing and create Arc'
 	},
-	radius: 'Width (meters): '
+	radius: 'Radius (meters): ',
+	bearing: 'Bearing (degrees): '
 };
