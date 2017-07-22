@@ -22,8 +22,6 @@ Leaflet.draw-arc requires
     import './path/to/leaflet.arc'
     import './path/to/Leaflet.draw-arc'
 
-    * If using es6 with object spread you can opt to use the uncompiled src/Leaflet.draw-arc.js
-
 *ES6 module*
 
     TODO
