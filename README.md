@@ -8,9 +8,28 @@ Leaflet.draw-arc requires
 + [Leaflet.draw 0.2.4](https://github.com/Leaflet/Leaflet.draw/releases/tag/v0.2.4) or higher
 + [leaflet.arc](https://github.com/jjwtay/leaflet.arc)
 
+## How to
+
+*Traditional*
+
+    Include Leaflet.draw-arc.js in your html
+
+    <script src='/path/to/leaflet.arc.js'></script>
+    <script src='/path/to/Leaflet.draw-arc.js'></script>
+
+*Webpack as non es6 module*
+
+    import './path/to/leaflet.arc'
+    import './path/to/Leaflet.draw-arc'
+
+    * If using es6 with object spread you can opt to use the uncompiled src/Leaflet.draw-arc.js
+
+*ES6 module*
+
+    TODO
 ## Usage
 
-See [Leaflet.draw](https://github.com/Leaflet/Leaflet.draw#using) and [leaflet.arc](https://github.com/jjwtay/leaflet.box).
+See [Leaflet.draw](https://github.com/Leaflet/Leaflet.draw#using) and [leaflet.arc](https://github.com/jjwtay/leaflet.arc).
 
 # Checkout
 
