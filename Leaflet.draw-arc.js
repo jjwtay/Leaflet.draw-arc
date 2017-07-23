@@ -52,7 +52,6 @@ L.Draw.Arc = L.Draw.Feature.extend({
 
         L.Draw.Feature.prototype.initialize.call(this, map, options);
     },
-
     _drawShape: function _drawShape(latlng) {
         var radius = void 0,
             pc = void 0,
@@ -87,7 +86,6 @@ L.Draw.Arc = L.Draw.Feature.extend({
             this._shape.setLatLngs(this._shape.getLatLngs());
         }
     },
-
     _drawLine: function _drawLine(latlng) {
         if (!this._line) {
             this._line = L.polyline([this._startLatLng, latlng], this.options.lineOptions);
@@ -96,7 +94,6 @@ L.Draw.Arc = L.Draw.Feature.extend({
             this._line.setLatLngs([this._startLatLng, latlng]);
         }
     },
-
     _fireCreatedEvent: function _fireCreatedEvent() {
         var arc = L.arc(_extends({}, this.options.shapeOptions, {
             center: this._startLatLng,
@@ -107,10 +104,10 @@ L.Draw.Arc = L.Draw.Feature.extend({
 
         L.Draw.SimpleShape.prototype._fireCreatedEvent.call(this, arc);
     },
-
     _onMouseMove: function _onMouseMove(e) {
-        var latlng = e.latlng,
-            radius = void 0,
+        var latlng = e.latlng;
+
+        var radius = void 0,
             pc = void 0,
             ph = void 0,
             v = void 0,
@@ -149,13 +146,14 @@ L.Draw.Arc = L.Draw.Feature.extend({
             }
         }
     },
-
     _onMouseDown: function _onMouseDown(e) {
-        var latlng = e.latlng,
-            pc = void 0,
+        var latlng = e.latlng;
+
+        var pc = void 0,
             ph = void 0,
             v = void 0,
             newB = void 0;
+
         this._isDrawing = true;
 
         if (!this._startLatLng) {
@@ -180,7 +178,6 @@ L.Draw.Arc = L.Draw.Feature.extend({
             this._endBearing = newB;
         }
     },
-
     _onMouseUp: function _onMouseUp(e) {
         if (this._endBearing) {
             this._fireCreatedEvent(e);
@@ -192,6 +189,7 @@ L.Draw.Arc = L.Draw.Feature.extend({
             }
         }
     },
+
     // @method addHooks(): void
     // Add listener hooks to this handler.
     addHooks: function addHooks() {
@@ -213,6 +211,7 @@ L.Draw.Arc = L.Draw.Feature.extend({
             //.on('touchmove', this._onMouseMove, this);
         }
     },
+
     // @method removeHooks(): void
     // Remove listener hooks from this handler.
     removeHooks: function removeHooks() {
@@ -293,43 +292,36 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
         //Create rotate Marker
         this._createRotateMarker();
     },
-
     _createMoveMarker: function _createMoveMarker() {
         var center = this._shape.getCenter();
         this._moveMarker = this._createMarker(center, this.options.moveIcon);
     },
-
     _createResizeMarker: function _createResizeMarker() {
         var bearing = (this._shape.getEndBearing() + this._shape.getStartBearing()) / 2,
             point = this._shape.computeDestinationPoint(this._shape.getCenter(), this._shape.getRadius(), bearing);
 
         this._resizeMarker = this._createMarker(point, this.options.resizeIcon);
     },
-
     _createStartMarker: function _createStartMarker() {
         var point = this._shape.computeDestinationPoint(this._shape.getCenter(), this._shape.getRadius(), this._shape.getStartBearing());
 
         this._startMarker = this._createMarker(point, this.options.startIcon);
     },
-
     _createEndMarker: function _createEndMarker() {
         var point = this._shape.computeDestinationPoint(this._shape.getCenter(), this._shape.getRadius(), this._shape.getEndBearing());
 
         this._endMarker = this._createMarker(point, this.options.endIcon);
     },
-
     _createRotateMarker: function _createRotateMarker() {
         var bearing = (this._shape.getEndBearing() + this._shape.getStartBearing()) / 2,
             point = this._shape.computeDestinationPoint(this._shape.getCenter(), this._shape.getRadius() * 1.3, bearing);
 
         this._rotateMarker = this._createMarker(point, this.options.rotateIcon);
     },
-
     _onMarkerDragStart: function _onMarkerDragStart(e) {
         L.Edit.SimpleShape.prototype._onMarkerDragStart.call(this, e);
         this._currentMarker = e.target;
     },
-
     _onMarkerDrag: function _onMarkerDrag(e) {
         var marker = e.target,
             latlng = marker.getLatLng();
@@ -348,7 +340,6 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
 
         this._shape.redraw();
     },
-
     _move: function _move(latlng) {
         this._shape.setCenter(latlng);
         this._shape.setLatLngs(this._shape.getLatLngs());
@@ -359,7 +350,6 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
         this._repositionEndMarker();
         this._repositionRotateMarker();
     },
-
     _resize: function _resize(latlng) {
         //let moveLatLng = this._moveMarker.getLatLng()
         var radius = this._shape.getCenter().distanceTo(latlng);
@@ -372,7 +362,6 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
         this._repositionResizeMarker();
         this._repositionRotateMarker();
     },
-
     _restart: function _restart(latlng) {
         var moveLatLng = this._shape.getCenter(),
             pc = this._map.project(moveLatLng),
@@ -390,7 +379,6 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
         this._repositionEndMarker();
         this._repositionRotateMarker();
     },
-
     _end: function _end(latlng) {
         var moveLatLng = this._shape.getCenter(),
             pc = this._map.project(moveLatLng),
@@ -408,7 +396,6 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
         this._repositionStartMarker();
         this._repositionRotateMarker();
     },
-
     _rotate: function _rotate(latlng) {
         var moveLatLng = this._shape.getCenter(),
             pc = this._map.project(moveLatLng),
@@ -428,24 +415,20 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
         this._repositionStartMarker();
         this._repositionRotateMarker();
     },
-
     _repositionResizeMarker: function _repositionResizeMarker() {
         var bearing = (this._shape.getEndBearing() + this._shape.getStartBearing()) / 2,
             point = this._shape.computeDestinationPoint(this._shape.getCenter(), this._shape.getRadius(), bearing);
 
         this._resizeMarker.setLatLng(point);
     },
-
     _repositionStartMarker: function _repositionStartMarker() {
         var start = this._shape.computeDestinationPoint(this._shape.getCenter(), this._shape.getRadius(), this._shape.getStartBearing());
         this._startMarker.setLatLng(start);
     },
-
     _repositionEndMarker: function _repositionEndMarker() {
         var end = this._shape.computeDestinationPoint(this._shape.getCenter(), this._shape.getRadius(), this._shape.getEndBearing());
         this._endMarker.setLatLng(end);
     },
-
     _repositionRotateMarker: function _repositionRotateMarker() {
         var bearing = (this._shape.getEndBearing() + this._shape.getStartBearing()) / 2;
 

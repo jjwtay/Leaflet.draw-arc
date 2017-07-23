@@ -24,7 +24,7 @@ L.Draw.Arc = L.Draw.Feature.extend({
         }
     },
 
-    initialize: function (map, options) {
+    initialize (map, options) {
         if (options && options.shapeOptions) {
             options.shapeOptions = L.Util.extend({}, this.options.shapeOptions, options.shapeOptions)
         }
@@ -39,7 +39,7 @@ L.Draw.Arc = L.Draw.Feature.extend({
         L.Draw.Feature.prototype.initialize.call(this, map, options)
     },
 
-    _drawShape: function (latlng) {
+    _drawShape (latlng) {
         let radius, pc, ph, v, startBearing, endBearing
 
         if (!this._shape) {
@@ -71,7 +71,7 @@ L.Draw.Arc = L.Draw.Feature.extend({
         }
     },
 
-    _drawLine: function (latlng) {
+    _drawLine (latlng) {
         if (!this._line) {
             this._line = L.polyline([this._startLatLng, latlng], this.options.lineOptions)
             this._map.addLayer(this._line)
@@ -81,8 +81,8 @@ L.Draw.Arc = L.Draw.Feature.extend({
 
     },
 
-    _fireCreatedEvent: function () {
-        let arc = L.arc({
+    _fireCreatedEvent () {
+        const arc = L.arc({
             ...this.options.shapeOptions,
             center: this._startLatLng,
             radius: this._shape.getRadius(),
@@ -93,9 +93,10 @@ L.Draw.Arc = L.Draw.Feature.extend({
         L.Draw.SimpleShape.prototype._fireCreatedEvent.call(this, arc)
     },
 
-    _onMouseMove: function (e) {
-        let latlng = e.latlng,
-            radius, pc, ph, v, bearing
+    _onMouseMove (e) {
+        const latlng = e.latlng
+
+        let radius, pc, ph, v, bearing
 
         this._tooltip.updatePosition(latlng)
 
@@ -132,9 +133,11 @@ L.Draw.Arc = L.Draw.Feature.extend({
         }
     },
 
-    _onMouseDown: function (e) {
-        let latlng = e.latlng,
-            pc, ph, v, newB
+    _onMouseDown (e) {
+        const latlng = e.latlng
+
+        let pc, ph, v, newB
+
         this._isDrawing = true
 
         if (!this._startLatLng) {
@@ -161,7 +164,7 @@ L.Draw.Arc = L.Draw.Feature.extend({
         }
     },
 
-    _onMouseUp: function (e) {
+    _onMouseUp (e) {
         if (this._endBearing) {
             this._fireCreatedEvent(e)
 
@@ -174,7 +177,7 @@ L.Draw.Arc = L.Draw.Feature.extend({
     },
     // @method addHooks(): void
     // Add listener hooks to this handler.
-    addHooks: function () {
+    addHooks () {
         L.Draw.Feature.prototype.addHooks.call(this)
         if (this._map) {
             this._mapDraggable = this._map.dragging.enabled()
@@ -198,7 +201,7 @@ L.Draw.Arc = L.Draw.Feature.extend({
     },
     // @method removeHooks(): void
     // Remove listener hooks from this handler.
-    removeHooks: function () {
+    removeHooks () {
         //L.Draw.Feature.prototype.removeHooks.call(this);
         if (this._map) {
             if (this._mapDraggable) {

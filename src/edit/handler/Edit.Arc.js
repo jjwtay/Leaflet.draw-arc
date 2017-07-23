@@ -23,8 +23,8 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
             className: 'leaflet-div-icon leaflet-editing-icon leaflet-edit-rotate'
         })
     },
-	
-    _initMarkers: function () {
+
+    _initMarkers () {
         if (!this._markerGroup) {
             this._markerGroup = new L.LayerGroup()
         }
@@ -45,25 +45,25 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
         //Create rotate Marker
         this._createRotateMarker()
     },
-	
-    _createMoveMarker: function () {
-        let center = this._shape.getCenter()
+
+    _createMoveMarker () {
+        const center = this._shape.getCenter()
         this._moveMarker = this._createMarker(center, this.options.moveIcon)
     },
 
-    _createResizeMarker: function () {
-        let bearing = (this._shape.getEndBearing() + this._shape.getStartBearing()) / 2,
+    _createResizeMarker () {
+        const bearing = (this._shape.getEndBearing() + this._shape.getStartBearing()) / 2,
             point = this._shape.computeDestinationPoint(
                 this._shape.getCenter(),
                 this._shape.getRadius(),
                 bearing
-            ) 
+            )
 
         this._resizeMarker = this._createMarker(point, this.options.resizeIcon)
     },
-	
-    _createStartMarker: function () {
-        let point = this._shape.computeDestinationPoint(
+
+    _createStartMarker () {
+        const point = this._shape.computeDestinationPoint(
             this._shape.getCenter(),
             this._shape.getRadius(),
             this._shape.getStartBearing()
@@ -72,8 +72,8 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
         this._startMarker = this._createMarker(point, this.options.startIcon)
     },
 
-    _createEndMarker: function () {
-        let point = this._shape.computeDestinationPoint(
+    _createEndMarker () {
+        const point = this._shape.computeDestinationPoint(
             this._shape.getCenter(),
             this._shape.getRadius(),
             this._shape.getEndBearing()
@@ -82,8 +82,8 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
         this._endMarker = this._createMarker(point, this.options.endIcon)
     },
 
-    _createRotateMarker: function () {
-        let bearing = (this._shape.getEndBearing() + this._shape.getStartBearing()) / 2,
+    _createRotateMarker () {
+        const bearing = (this._shape.getEndBearing() + this._shape.getStartBearing()) / 2,
 
             point = this._shape.computeDestinationPoint(
                 this._shape.getCenter(),
@@ -94,13 +94,13 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
         this._rotateMarker = this._createMarker(point, this.options.rotateIcon)
     },
 
-    _onMarkerDragStart: function (e) {
+    _onMarkerDragStart (e) {
         L.Edit.SimpleShape.prototype._onMarkerDragStart.call(this, e)
         this._currentMarker = e.target
     },
-	
-    _onMarkerDrag: function (e) {
-        let marker = e.target,
+
+    _onMarkerDrag (e) {
+        const marker = e.target,
             latlng = marker.getLatLng()
 
         if (marker === this._moveMarker) {
@@ -118,7 +118,7 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
         this._shape.redraw()
     },
 
-    _move: function (latlng) {
+    _move (latlng) {
         this._shape.setCenter(latlng)
         this._shape.setLatLngs(this._shape.getLatLngs())
 
@@ -129,9 +129,9 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
         this._repositionRotateMarker()
     },
 
-    _resize: function (latlng) {
+    _resize (latlng) {
         //let moveLatLng = this._moveMarker.getLatLng()
-        let radius = this._shape.getCenter().distanceTo(latlng)
+        const radius = this._shape.getCenter().distanceTo(latlng)
 
         this._shape.setRadius(radius)
         this._shape.setLatLngs(this._shape.getLatLngs())
@@ -142,8 +142,8 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
         this._repositionRotateMarker()
     },
 
-    _restart: function (latlng) {
-        let moveLatLng = this._shape.getCenter(),
+    _restart (latlng) {
+        const moveLatLng = this._shape.getCenter(),
             pc = this._map.project(moveLatLng),
             ph = this._map.project(latlng),
             v = [ph.x - pc.x, ph.y - pc.y],
@@ -161,14 +161,14 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
         this._repositionRotateMarker()
     },
 
-    _end: function (latlng) {
-        let moveLatLng = this._shape.getCenter(),
+    _end (latlng) {
+        const moveLatLng = this._shape.getCenter(),
             pc = this._map.project(moveLatLng),
             ph = this._map.project(latlng),
             v = [ph.x - pc.x, ph.y - pc.y],
 
             newB = Math.atan2(v[0], -v[1]) * 180 / Math.PI
-        
+
         this._shape.setEndBearing(newB)
 
         this._shape.setLatLngs(this._shape.getLatLngs())
@@ -180,8 +180,8 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
         this._repositionRotateMarker()
     },
 
-    _rotate: function (latlng) {
-        let moveLatLng = this._shape.getCenter(),
+    _rotate (latlng) {
+        const moveLatLng = this._shape.getCenter(),
             pc = this._map.project(moveLatLng),
             ph = this._map.project(latlng),
             v = [ph.x - pc.x, ph.y - pc.y],
@@ -200,9 +200,9 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
         this._repositionStartMarker()
         this._repositionRotateMarker()
     },
-	
-    _repositionResizeMarker: function () {
-        let bearing = (this._shape.getEndBearing() + this._shape.getStartBearing()) / 2,
+
+    _repositionResizeMarker () {
+        const bearing = (this._shape.getEndBearing() + this._shape.getStartBearing()) / 2,
             point = this._shape.computeDestinationPoint(
                 this._shape.getCenter(),
                 this._shape.getRadius(),
@@ -211,9 +211,9 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
 
         this._resizeMarker.setLatLng(point)
     },
-	
-    _repositionStartMarker: function () {
-        let start = this._shape.computeDestinationPoint(
+
+    _repositionStartMarker () {
+        const start = this._shape.computeDestinationPoint(
             this._shape.getCenter(),
             this._shape.getRadius(),
             this._shape.getStartBearing()
@@ -221,8 +221,8 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
         this._startMarker.setLatLng(start)
     },
 
-    _repositionEndMarker: function () {
-        let end = this._shape.computeDestinationPoint(
+    _repositionEndMarker () {
+        const end = this._shape.computeDestinationPoint(
             this._shape.getCenter(),
             this._shape.getRadius(),
             this._shape.getEndBearing()
@@ -230,10 +230,10 @@ L.Edit.Arc = L.Edit.SimpleShape.extend({
         this._endMarker.setLatLng(end)
     },
 
-    _repositionRotateMarker: function () {
-        let bearing = (this._shape.getEndBearing() + this._shape.getStartBearing()) / 2
+    _repositionRotateMarker () {
+        const bearing = (this._shape.getEndBearing() + this._shape.getStartBearing()) / 2
 
-        let point = this._shape.computeDestinationPoint(
+        const point = this._shape.computeDestinationPoint(
             this._shape.getCenter(),
             this._shape.getRadius() * 1.3,
             bearing
