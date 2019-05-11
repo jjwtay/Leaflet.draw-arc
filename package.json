@@ -1,6 +1,6 @@
 {
   "name": "leaflet.draw-arc",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Leaflet Draw inspired handlers for leaflet.arc",
   "main": "Leaflet.draw-arc.js",
   "scripts": {

@@ -259,7 +259,10 @@ L.Arc.addInitHook(function () {
     })
 
     this.on('remove', function () {
-        if (this.editing && this.editing.enabled()) {
+        /** Note: added check for _resizemarkers due to odd behavior
+         *  when working out of react-leaflet and removing the map.
+         */
+        if (this.editing && this.editing.enabled() && this.editing._resizeMarkers) {
             this.editing.removeHooks()
         }
     })
